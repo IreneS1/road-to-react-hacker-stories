@@ -1,6 +1,17 @@
 import './App.css';
 import * as React from 'react';
 
+const useStorageState = (key, initialState) => {
+  const [value, setValue] = React.useState(
+    localStorage.getItem(key) || initialState
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [value, key]);
+
+  return [value, setValue];
+};
 
 const App = () => {
 
@@ -23,7 +34,9 @@ const App = () => {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState('React');
+  const [searchTerm, setSearchTerm] = useStorageState(
+    'search',
+    'React');
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -34,14 +47,14 @@ const App = () => {
   );
 
   return (
-    <div>
+    <>
       <h1>My Hacker Stories</h1>
 
       <Search search={searchTerm} onSearch={handleSearch} />
 
       <hr />
       <List list={searchedStories} />
-    </div>
+    </>
   );
 }
 
@@ -65,7 +78,7 @@ const Item = ({ item }) => (
 );
 
 const Search = ({ search, onSearch }) => (
-  <div>
+  <>
     <label htmlFor="search">Search: </label>
     <input
       id="search"
@@ -75,7 +88,7 @@ const Search = ({ search, onSearch }) => (
     {/* <p>
         Searching for <strong>{searchTerm}</strong>
       </p> */}
-  </div>
+  </>
 );
 
 
