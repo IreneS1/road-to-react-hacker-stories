@@ -1,4 +1,5 @@
-import './App.css';
+import styles from './App.module.css';
+import { ReactComponent as Check } from './check.svg';
 import * as React from 'react';
 import axios from 'axios';
 
@@ -101,8 +102,8 @@ const App = () => {
   };
 
   return (
-    <>
-      <h1>My Hacker Stories</h1>
+    <div className={styles.container}>
+      <h1 className={styles.headlinePrimary}>My Hacker Stories</h1>
 
       <SearchForm
         searchTerm={searchTerm}
@@ -120,7 +121,7 @@ const App = () => {
 
         <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
-    </>
+    </div>
   );
 };
 
@@ -129,7 +130,7 @@ const SearchForm = ({
   onSearchInput,
   onSearchSubmit,
 }) => (
-  <form onSubmit={onSearchSubmit}>
+  <form onSubmit={onSearchSubmit} className={styles.searchForm}>
     <InputWithLabel
       id="search"
       value={searchTerm}
@@ -139,7 +140,11 @@ const SearchForm = ({
       <strong>Search:</strong>
     </InputWithLabel>
 
-    <button type="submit" disabled={!searchTerm}>
+    <button
+      type="submit"
+      disabled={!searchTerm}
+      className={`${styles.button} ${styles.buttonLarge}`}
+    >
       Submit
     </button>
   </form>
@@ -164,7 +169,8 @@ const InputWithLabel = ({
 
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <label htmlFor={id} className={styles.label}>
+        {children}</label>
       &nbsp;
       <input
         id={id}
@@ -173,6 +179,7 @@ const InputWithLabel = ({
         value={value}
         autoFocus={isFocused}
         onChange={onInputChange}
+        className={styles.input}
       />
     </>
   );
@@ -192,16 +199,20 @@ const List = ({ list, onRemoveItem }) => (
 );
 
 const Item = ({ item, onRemoveItem }) => (
-  <li>
-    <span>
+  <li className={styles.item}>
+    <span style={{ width: '40%' }}>
       <a href={item.url}>{item.title}</a>
     </span>
-    <span>{item.author}</span>
-    <span>{item.num_comments}</span>
-    <span>{item.points}</span>
-    <span>
-      <button type="button" onClick={() => onRemoveItem(item)}>
-        Dismiss
+    <span style={{ width: '30%' }}>{item.author}</span>
+    <span style={{ width: '10%' }}>{item.num_comments}</span>
+    <span style={{ width: '10%' }}>{item.points}</span>
+    <span style={{ width: '10%' }}>
+      <button
+        type="button"
+        onClick={() => onRemoveItem(item)}
+        className={`${styles.button} ${styles.buttonSmall}`}
+      >
+        <Check height="18px" width="18px" />
       </button>
     </span>
   </li>
